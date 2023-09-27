@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Student>
+
+
+@{
+    ViewData["title"] = "Student List";
+    Layout = "~/Views/Shared/MyLayoutHelper.cshtml";
+}
+
+@* Cách 1 *@
+<a asp-action="Create" class="btn btn-primary">Create Student</a>
+
+@* Cách 2 *@
+<a href="/Admin/Student/Add" class="btn btn-primary">Create Student (href)</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Họ tên</th>
+            <th>Ngày sinh</th>
+            <th>Ngành</th>
+            <th>Giới tính</th>
+            <th>Hệ ĐT</th>
+            <th>Địa chỉ</th>
+            <th>Email</th>
+            <th>Avatar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Id</td>
+                <td>@s.Name</td>
+                <td>@s.DateOfBorth</td>
+                @{
+                    string str = "";
+                    switch (s.Branch)
+                    {
+                        case Branch.IT:
+                            str = "CNTT";
+                            break;
+                        case Branch.BE:
+                            str = "Kinh tế";
+                            break;
+                        case Branch.CE:
+                            str = "Công trình";
+
+                            break;
+                        case Branch.EE:
+                            str = "Điện - Điện tử";
+                            break;
+                    }
+                }
+                <td>@str</td>
+                <td>@(s.Gender == Gender.Male ? "Nam" : "Nữ")</td>
+                <td>@(s.IsRegular ? "Chính quy" : "Phi chính quy")</td>
+                <td>@s.Address</td>
+                <td>@s.Email</td>
+                <td>
+                    @if (s.AvatarUrl != null)
+                    {
+                        <a href="/@s.AvatarUrl">
+                            <img src="/@s.AvatarUrl"
+                                 width="50"
+                                 height="50"
+                                 style="border-radius: 5px" />
+                        </a>
+                    }
+                    else
+                    {
+                        <span>None</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts{
+    <script>
+        var table = document.querySelector("table");
+        table.onclick = function onTableClick() {
+            table.style = "background-color: yellow;"
+        }
+    </script>
+}

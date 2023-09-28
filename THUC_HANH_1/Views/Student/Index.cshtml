@@ -1,16 +1,9 @@
 ﻿@model IEnumerable<Student>
 
-
-@{
-    ViewData["title"] = "Student List";
-    Layout = "~/Views/Shared/MyLayoutHelper.cshtml";
-}
-
-@* Cách 1 *@
+@* // Cach 1: *@
 <a asp-action="Create" class="btn btn-primary">Create Student</a>
-
-@* Cách 2 *@
-<a href="/Admin/Student/Add" class="btn btn-primary">Create Student (href)</a>
+@* // Cach 2: *@
+<a href="/Admin/Student/Add" class="btn btn-primary">Create Student (Href)</a>
 
 <table class="table table-striped">
     <thead>
@@ -23,6 +16,7 @@
             <th>Hệ ĐT</th>
             <th>Địa chỉ</th>
             <th>Email</th>
+            <th>Điểm</th>
             <th>Avatar</th>
         </tr>
     </thead>
@@ -37,6 +31,7 @@
                     string str = "";
                     switch (s.Branch)
                     {
+
                         case Branch.IT:
                             str = "CNTT";
                             break;
@@ -57,14 +52,16 @@
                 <td>@(s.IsRegular ? "Chính quy" : "Phi chính quy")</td>
                 <td>@s.Address</td>
                 <td>@s.Email</td>
+                <td>@s.Mark</td>
                 <td>
-                    @if (s.AvatarUrl != null)
+                    @if (s.AvatarUrl != null && s.AvatarUrl != string.Empty)
                     {
-                        <a href="/@s.AvatarUrl">
-                            <img src="/@s.AvatarUrl"
-                                 width="50"
-                                 height="50"
-                                 style="border-radius: 5px" />
+                        <a href="/UploadedFiles/@s.AvatarUrl">
+                            <img src="/UploadedFiles/@s.AvatarUrl" 
+                            width="50"
+                            height="50"
+                            style="border-radius: 5px"
+                            />
                         </a>
                     }
                     else
@@ -76,13 +73,3 @@
         }
     </tbody>
 </table>
-
-
-@section Scripts{
-    <script>
-        var table = document.querySelector("table");
-        table.onclick = function onTableClick() {
-            table.style = "background-color: yellow;"
-        }
-    </script>
-}
